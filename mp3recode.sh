@@ -3,6 +3,7 @@
 #usage ./mp3recode.sh indir outdir
 # reencode media file in input dir (recursive) to output dir (dir tree recreation).
 # supports mp3 (reencode/copy), flac (reendocde) and jpg (copy).
+# mp3recode.sh "$(zenity --file-selection --directory)" .
 
 shopt -s extglob # extra glob matching
 
@@ -17,7 +18,7 @@ encodeFile () {
             if [ ! -d "$outDir" ]; then
                 mkdir -p "$outDir"
             fi
-            bitrate=$(mediainfo "$inF" | grep "Overall bit rate  .*s" | grep -o [0-9]*)
+            bitrate=$(mediainfo "$inF" | grep "Overall bit rate  .*s" | grep -o "[0-9]*")
             if ((bitrate<=192)); then # bitrate low enough: just copy
                 cp -v "$inF" "$outDir"
             else # hight to low bitrate re-encode
